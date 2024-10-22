@@ -1,0 +1,76 @@
+<mvc:View 
+	controllerName="ns.asa.zappreportinflresvf.controller.ReportMain"
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core" 
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:f="sap.f"
+	xmlns:footerbar="sap.ushell.ui.footerbar"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:smartfilterbar="sap.ui.comp.smartfilterbar" 
+	xmlns:smartlink="sap.ui.comp.navpopover" 
+	xmlns:smarttable="sap.ui.comp.smarttable"
+	xmlns:table="sap.ui.table"
+	xmlns:unified="sap.ui.unified"
+	xmlns:variants="sap.ui.comp.smartvariants"
+	xmlns:plugins="sap.ui.table.plugins">
+
+	<f:DynamicPage id="zdisplayPage" busy="{appView>/busy}" busyIndicatorDelay="400" 
+		           headerExpanded="{page>/headerExpanded}" preserveHeaderStateOnScroll="false" fitContent="true"
+		           showFooter="false" >
+	<!--
+	<f:dependents>
+			<core:CommandExecution id="ShareCommand" command="Share" enabled="true" execute=".onShareButtonPressed"/>
+			<core:CommandExecution id="EnterCommand" command="Enter" enabled="true" execute=".onSearchButtonPressed"/>
+	</f:dependents>
+    -->
+	
+	<!--Title-->
+	<!--
+		<f:title>
+			<f:DynamicPageTitle id="DynamicPageTitle">
+				<f:heading>
+					<variants:SmartVariantManagement id="SmartPageVariant" showExecuteOnSelection="true" showShare="true" variantCreationByUserAllowed="true" />
+				</f:heading>
+				<f:snappedContent>
+					<Text id="FilterText" wrapping="false"></Text>
+				</f:snappedContent>
+			</f:DynamicPageTitle>
+		</f:title>
+		-->
+
+    <!--Header-->
+		<f:header>
+			<f:DynamicPageHeader id="PageHeader" pinnable="false">
+				<f:content>
+					<smartfilterbar:SmartFilterBar
+						id="SmartFilterBarMain" entitySet="ZreportInfAccRes" 
+						reset="onReset" initialise="onInitSmartFilterBar"
+						persistencyKey="ns.asa.zappreportinflresvf.view.ReportMain"
+						useDateRangeType="true">
+
+						<smartfilterbar:layoutData>
+							<FlexItemData id="FlexItemData" shrinkFactor="0" />
+						</smartfilterbar:layoutData>
+
+						<smartfilterbar:controlConfiguration>
+							<smartfilterbar:ControlConfiguration key="CompanyCode" index="0" groupId="_BASIC" />
+							<smartfilterbar:ControlConfiguration key="FiscalYear" index="1" groupId="_BASIC" />
+							<smartfilterbar:ControlConfiguration key="FiscalPeriod" index="2" groupId="_BASIC" />
+							<smartfilterbar:ControlConfiguration key="GLAccount" index="3" groupId="_BASIC" />
+						</smartfilterbar:controlConfiguration>
+
+					</smartfilterbar:SmartFilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+
+	<!--Detail-->
+    <f:content>
+		<core:Fragment fragmentName="ns.asa.zappreportinflresvf.view.fragments.smartTableReport" type="XML"/>
+    </f:content>
+    
+    </f:DynamicPage>
+
+</mvc:View>

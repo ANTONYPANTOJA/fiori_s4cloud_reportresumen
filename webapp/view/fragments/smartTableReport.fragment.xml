@@ -1,0 +1,147 @@
+ <core:FragmentDefinition 
+ 	xmlns="sap.m" 
+	xmlns:core="sap.ui.core" 
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:f="sap.f"
+	xmlns:footerbar="sap.ushell.ui.footerbar"
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:smartfilterbar="sap.ui.comp.smartfilterbar" 
+	xmlns:smartlink="sap.ui.comp.navpopover" 
+	xmlns:smarttable="sap.ui.comp.smarttable"
+	xmlns:table="sap.ui.table"
+	xmlns:unified="sap.ui.unified"
+	xmlns:variants="sap.ui.comp.smartvariants"
+	xmlns:plugins="sap.ui.table.plugins">
+	
+    <smarttable:SmartTable id="SmartTableItems"
+				entitySet="ZreportInfAccRes" smartFilterId="SmartFilterBarMain"
+				tableType="Table" enableAutoColumnWidth="true"
+				header="{i18n>titleSmart}"
+				ignoredFields=""
+				initiallyVisibleFields=""
+				beforeRebindTable="onBeforeRebindTable" afterVariantSave="onAfterTableVariantSave" afterVariantApply="onAfterTableVariantApply"
+				persistencyKey="fin.ap.line.items.display.TablePersoKey"
+				showOverlay="onShowOverlay"
+				beforeExport="onBeforeExport">
+        
+		       <!-- Botones Tabla-->
+         <smarttable:customToolbar>
+			<Toolbar design="Transparent">
+			<ToolbarSpacer></ToolbarSpacer>
+			<Button id="btnPost" tooltip="{i18n>Post}" text="{i18n>Post}" press="onPostPressed" type="Ghost" enabled="{aStatus>/btnContab}" icon="sap-icon://my-sales-order"/>
+			<Button id="btnRefresh" icon="sap-icon://synchronize" tooltip="{i18n>BtnRefresh}" press="onRefresh"/>
+			</Toolbar>
+		</smarttable:customToolbar>
+        <!--
+		<Table id="tablefact" growing="true" growingScrollToLoad="true" growingThreshold="100" mode="MultiSelect"
+						 	  fixedLayout="true" selectionChange="onRowSelectionChange">
+
+			<columns>
+					<Column hAlign="Center" tooltip="{i18n>CompanyCode}" visible="true" width="8rem">
+							<Label text="{i18n>CompanyCode}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CompanyCode", "leadingProperty": "CompanyCode", "sortProperty": "CompanyCode", "filterProperty": "CompanyCode",  "columnIndex": "1"\}'/>
+								</customData>
+					</Column>
+
+					<Column hAlign="Center" tooltip="{i18n>GLAccount}" visible="true" width="12rem">
+							<Label text="{i18n>GLAccount}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "GLAccount", "leadingProperty": "GLAccount", "sortProperty": "GLAccount", "filterProperty": "GLAccount",  "columnIndex": "2"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>InflorigText}" visible="true" width="12rem">
+							<Label text="{i18n>InflorigText}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "InflorigText", "leadingProperty": "InflorigText", "sortProperty": "InflorigText", "filterProperty": "InflorigText",  "columnIndex": "3"\}'/>
+								</customData>
+					</Column>
+					
+					<Column hAlign="Center" tooltip="{i18n>AmountInCompanyCodeCurrency}" visible="true" width="10rem">
+							<Label text="{i18n>AmountInCompanyCodeCurrency}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "AmountInCompanyCodeCurrency", "leadingProperty": "AmountInCompanyCodeCurrency", "sortProperty": "AmountInCompanyCodeCurrency", "filterProperty": "AmountInCompanyCodeCurrency",  "columnIndex": "4"\}'/>
+								</customData>
+					</Column>
+					
+					<Column hAlign="Center" tooltip="{i18n>CompanyCodeCurrency}" visible="true" width="10rem">
+							<Label text="{i18n>CompanyCodeCurrency}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CompanyCodeCurrency", "leadingProperty": "CompanyCodeCurrency", "sortProperty": "CompanyCodeCurrency", "filterProperty": "CompanyCodeCurrency",  "columnIndex": "5"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>FechaAjust}" visible="true" width="8rem">
+							<Label text="{i18n>FechaAjust}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "FechaAjust", "leadingProperty": "FechaAjust", "sortProperty": "FechaAjust", "filterProperty": "FechaAjust",  "columnIndex": "6"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>CtaDebe}" visible="true" width="12rem">
+							<Label text="{i18n>CtaDebe}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CtaDebe", "leadingProperty": "CtaDebe", "sortProperty": "CtaDebe", "filterProperty": "CtaDebe",  "columnIndex": "7"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>CtaDebeText}" visible="true" width="12rem">
+							<Label text="{i18n>CtaDebeText}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CtaDebeText", "leadingProperty": "CtaDebeText", "sortProperty": "CtaDebeText", "filterProperty": "CtaDebeText",  "columnIndex": "8"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>CtaHaber}" visible="true" width="12rem">
+							<Label text="{i18n>CtaHaber}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CtaHaber", "leadingProperty": "CtaHaber", "sortProperty": "CtaHaber", "filterProperty": "CtaHaber",  "columnIndex": "9"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>CtaHaberText}" visible="true" width="12rem">
+							<Label text="{i18n>CtaHaberText}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CtaHaberText", "leadingProperty": "CtaHaberText", "sortProperty": "CtaHaberText", "filterProperty": "CtaHaberText",  "columnIndex": "10"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>CentroCosto}" visible="true" width="10rem">
+							<Label text="{i18n>CentroCosto}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "CentroCosto", "leadingProperty": "CentroCosto", "sortProperty": "CentroCosto", "filterProperty": "CentroCosto",  "columnIndex": "11"\}'/>
+								</customData>
+					</Column>
+					<Column hAlign="Center" tooltip="{i18n>ImporteAjust}" visible="true" width="10rem">
+							<Label text="{i18n>ImporteAjust}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "ImporteAjust", "leadingProperty": "ImporteAjust", "sortProperty": "ImporteAjust", "filterProperty": "ImporteAjust",  "columnIndex": "12"\}'/>
+								</customData>
+					</Column>
+
+					<Column hAlign="Center" tooltip="{i18n>AccountingDocument}" visible="true" width="12rem">
+							<Label text="{i18n>AccountingDocument}"/>
+								<customData>
+									<core:CustomData key="p13nData" value='\{"columnKey": "AccountingDocument", "leadingProperty": "AccountingDocument", "sortProperty": "AccountingDocument", "filterProperty": "AccountingDocument",  "columnIndex": "13"\}'/>
+								</customData>
+					</Column>																																		
+			</columns>
+			    <items>
+               	<ColumnListItem type="Active">
+								<cells>
+									<Text wrapping="false" text="{CompanyCode}"/>
+									<Text wrapping="false" text="{GLAccount}"/>
+									<Text wrapping="false" text="{InflorigText}"/>
+									<Text wrapping="false" text="{AmountInCompanyCodeCurrency}"/>
+									<Text wrapping="false" text="{CompanyCodeCurrency}"/>
+									<Text wrapping="false" text="{FechaAjust}"/>
+									<Text wrapping="false" text="{CtaDebe}"/>
+									<Text wrapping="false" text="{CtaDebeText}"/>
+									<Text wrapping="false" text="{CtaHaber}"/>
+									<Text wrapping="false" text="{CtaHaberText}"/>
+									<Text wrapping="false" text="{CentroCosto}"/>
+									<Text wrapping="false" text="{ImporteAjust}"/>
+									<Text wrapping="false" text="{AccountingDocument}"/>
+								</cells>
+				</ColumnListItem>
+               </items>
+		</Table>
+		-->
+        </smarttable:SmartTable>        
+</core:FragmentDefinition>  
