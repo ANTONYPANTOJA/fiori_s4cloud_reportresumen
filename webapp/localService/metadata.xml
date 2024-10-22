@@ -98,6 +98,14 @@
                 <Property Name="ledger" Type="Edm.String" Nullable="false" MaxLength="2" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="action" Type="Edm.String" MaxLength="5"/>
                 <Property Name="dateweb" Type="Edm.String" MaxLength="30"/>
+                <Property Name="AmountInCompanyCodeCurrency" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="CompanyCodeCurrency" sap:variable-scale="true" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="CompanyCodeCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
+                <Property Name="FechaAjust" Type="Edm.DateTime" Precision="0" sap:display-format="Date"/>
+                <Property Name="CtaDebe" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account" sap:quickinfo="G/L Account Number"/>
+                <Property Name="CtaHaber" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account" sap:quickinfo="G/L Account Number"/>
+                <Property Name="CentroCosto" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Cost Center"/>
+                <Property Name="ImporteAjust" Type="Edm.Decimal" Precision="23" Scale="2"/>
+                <Property Name="saldInitial" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="CompanyCodeCurrency" sap:variable-scale="true" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
             </EntityType>
             <EntityType Name="ZreportInfAccResType" sap:label="Información Resumido Inflacción Cta Mayo" sap:content-version="1">
                 <Key>
@@ -694,10 +702,34 @@
                     </Record>
                 </Annotation>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/AmountInCompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/CentroCosto" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/CompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/CtaDebe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/CtaHaber" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/FechaAjust" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/ImporteAjust" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/action" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/dateweb" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/saldInitial" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AmountInCompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">

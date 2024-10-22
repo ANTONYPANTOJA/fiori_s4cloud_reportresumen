@@ -16,35 +16,35 @@ function (Controller,MessageBox,BaseController,VariantItem) {
         onPostPressed: async function()
         {
             let body = {};
-            const path = "/ActionLedger";
-            
-            body.companycode = '1100'
-            body.fiscalyear = '2024';
-            body.fiscalperiod = '005';
-            body.glaccount = '0031000000';
-            body.ledger = 'OL';
-
-            const result = await this.createPostAction(path, body);
-            if (result) {
-            }
-            /*
-            const itemsSelected = this.getItemsTableSelected();
-            if (itemsSelected.length === 0) {
-                return;   
-            }
+            const path = "/ActionLedger"
 
             const rptaConfirm = await this.confirmPopup("TitDialog1", "msg01");
             
             if (rptaConfirm) {
-            for (let index = 0; index < itemsSelected.length; index++) {
-                const contextObject = itemsSelected[index].getBindingContext();
-                const objectModel   = contextObject.getObject();
+                const table = this.getView().byId("SmartTableItems").getTable();
+                const tableRows = table.getRows();
+                const tableSelectedIndices = table.getSelectedIndices();
+
+                for (let index = 0; index < tableSelectedIndices.length; index++) {
+                    const indice = tableSelectedIndices[index];
+                    const filterResults = tableRows[indice];   
+                    const contextObject = filterResults.getBindingContext();
+                    const objectModel   = contextObject.getObject();
+                    
                     if (objectModel) {
                         body.companycode = objectModel.CompanyCode;
                         body.fiscalyear = objectModel.FiscalYear;
                         body.fiscalperiod = objectModel.FiscalPeriod;
                         body.glaccount = objectModel.GLAccount;
+                        body.AmountInCompanyCodeCurrency = parseFloat(objectModel.AmountInCompanyCodeCurrency).toFixed(2);
                         body.ledger = objectModel.Ledger;
+                        body.CentroCosto = objectModel.CentroCosto;
+                        body.CompanyCodeCurrency = objectModel.CompanyCodeCurrency;
+                        body.CtaDebe = objectModel.CtaDebe;
+                        body.CtaHaber = objectModel.CtaHaber;
+                        body.FechaAjust = objectModel.FechaAjust;
+                        body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
+                        body.ImporteAjust = parseFloat(objectModel.ImporteAjust).toFixed(2); 
                         try {
                             const result = await this.createPostAction(path, body);
                             if (result) {
@@ -52,7 +52,9 @@ function (Controller,MessageBox,BaseController,VariantItem) {
                         } catch (error) {
                             console.error("Error Function postActionPress -" + body.glaccount, error)
                         }
-                    }*/
+                    }
+                }
+            }
             
         },
         onRefresh: function(){
