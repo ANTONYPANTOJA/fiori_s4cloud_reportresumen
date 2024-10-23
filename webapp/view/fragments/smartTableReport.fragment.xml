@@ -24,6 +24,8 @@
 				beforeRebindTable="onBeforeRebindTable" afterVariantSave="onAfterTableVariantSave" afterVariantApply="onAfterTableVariantApply"
 				persistencyKey="fin.ap.line.items.display.TablePersoKey"
 				showOverlay="onShowOverlay"
+				requestAtLeastFields="FiscalYear,FiscalPeriod,Ledger"
+				ignoreFromPersonalisation="FiscalYear,FiscalPeriod,Ledger"
 				beforeExport="onBeforeExport">
         
 		       <!-- Botones Tabla-->

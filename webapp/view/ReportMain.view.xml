@@ -26,20 +26,6 @@
 	</f:dependents>
     -->
 	
-	<!--Title-->
-	<!--
-		<f:title>
-			<f:DynamicPageTitle id="DynamicPageTitle">
-				<f:heading>
-					<variants:SmartVariantManagement id="SmartPageVariant" showExecuteOnSelection="true" showShare="true" variantCreationByUserAllowed="true" />
-				</f:heading>
-				<f:snappedContent>
-					<Text id="FilterText" wrapping="false"></Text>
-				</f:snappedContent>
-			</f:DynamicPageTitle>
-		</f:title>
-		-->
-
     <!--Header-->
 		<f:header>
 			<f:DynamicPageHeader id="PageHeader" pinnable="false">
