@@ -3,29 +3,52 @@ sap.ui.define([
     'sap/m/MessageBox',
     "ns/asa/zappreportinflresvf/controller/BaseController",
     "sap/m/VariantItem",
+    "sap/ui/model/json/JSONModel",
 ],
-function (Controller,MessageBox,BaseController,VariantItem) {
+function (Controller,MessageBox,BaseController,VariantItem,JSONModel) {
     "use strict";
 
     return BaseController.extend("ns.asa.zappreportinflresvf.controller.ReportMain", {
         onInit: function () {
 
             this._oVM = this.getView().byId("SmartPageVariant");
+            //Inicializar Modelos
+            this.initModels();
 
+        },
+        initModels: function()
+        {
+            const bundle = this.getResourceBundle();
+            const model = new JSONModel({
+                messages: [],
+                load: {
+                    message: bundle.getText("loadmsg")
+                },
+                idSession: ""
+            });
+            this.setModel(model, "model");
         },
         onPostPressed: async function()
         {
             let body = {};
             const path = "/ActionLedger"
+            const table = this.getView().byId("SmartTableItems").getTable();
+            const tableRows = table.getRows();
+            const tableSelectedIndices = table.getSelectedIndices();
+
+            if (tableSelectedIndices.length == 0) {
+                this.onDisplayMessageBoxPress('E', 'msg02');
+                return;
+            }else{
 
             const rptaConfirm = await this.confirmPopup("TitDialog1", "msg01");
             
             if (rptaConfirm) {
-                const table = this.getView().byId("SmartTableItems").getTable();
-                const tableRows = table.getRows();
-                const tableSelectedIndices = table.getSelectedIndices();
+
+                this.showBusyText("loadmsgPo");
 
                 for (let index = 0; index < tableSelectedIndices.length; index++) {
+
                     const indice = tableSelectedIndices[index];
                     const filterResults = tableRows[indice];   
                     const contextObject = filterResults.getBindingContext();
@@ -54,8 +77,10 @@ function (Controller,MessageBox,BaseController,VariantItem) {
                         }
                     }
                 }
-            }
-            
+                this.onDisplayMessageBoxPress('S', 'msg03');
+                this.hideBusyText();
+              }
+            } 
         },
         onRefresh: function(){
             this.onRefreshSingle(); 
