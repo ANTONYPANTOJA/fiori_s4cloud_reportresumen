@@ -66,7 +66,7 @@ function (Controller,MessageBox,BaseController,VariantItem,JSONModel) {
                         body.CtaDebe = objectModel.CtaDebe;
                         body.CtaHaber = objectModel.CtaHaber;
                         body.FechaAjust = objectModel.FechaAjust;
-                        body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
+//                      body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
                         body.ImporteAjust = parseFloat(objectModel.ImporteAjust).toFixed(2); 
                         try {
                             const result = await this.createPostAction(path, body);
