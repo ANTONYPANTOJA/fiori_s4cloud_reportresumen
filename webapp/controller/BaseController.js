@@ -78,5 +78,12 @@ sap.ui.define([
                 }
 
             },
+            showLog: function () {
+                if (!this._dialogLog) {
+                    this._dialogLog = sap.ui.xmlfragment("ns.asa.zappreportinflresvf.view.fragments.log", this);
+                    this.getView().addDependent(this._dialogLog);
+                }
+                this._dialogLog.open();
+            }
         });
     });

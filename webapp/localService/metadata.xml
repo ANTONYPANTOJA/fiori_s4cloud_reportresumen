@@ -123,7 +123,6 @@
                 <Property Name="FiscalPeriod" Type="Edm.String" Nullable="false" MaxLength="3" sap:filter-restriction="single-value" sap:required-in-filter="true" sap:label="Periodo" sap:value-list="standard"/>
                 <Property Name="Ledger" Type="Edm.String" Nullable="false" MaxLength="2"/>
                 <Property Name="InflorigText" Type="Edm.String" MaxLength="50" sap:label="Descripción Cta.Origen"/>
-                <Property Name="saldInitial" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="CompanyCodeCurrency" sap:variable-scale="true" sap:label="Saldo Inicial" sap:quickinfo="Amount in document currency"/>
                 <Property Name="AmountInCompanyCodeCurrency" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="CompanyCodeCurrency" sap:variable-scale="true" sap:label="Importe" sap:quickinfo="Amount in document currency"/>
                 <Property Name="CompanyCodeCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Moneda" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
                 <Property Name="FechaAjust" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Fecha Ajuste"/>
@@ -134,6 +133,9 @@
                 <Property Name="CentroCosto" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centro de Costo" sap:quickinfo="Cost Center"/>
                 <Property Name="ImporteAjust" Type="Edm.Decimal" Precision="23" Scale="2" sap:label="Importe de Ajuste"/>
                 <Property Name="AccountingDocument" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="N° documento de ajuste" sap:quickinfo="Document Number of an Accounting Document" sap:value-list="standard"/>
+                <Property Name="FlagProcess" Type="Edm.String" MaxLength="1"/>
+                <Property Name="FlagIndicador" Type="Edm.String" MaxLength="1"/>
+                <Property Name="FlagExecute" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="SAP__Currency" sap:content-version="1">
                 <Key>
@@ -759,6 +761,15 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FiscalYear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagExecute" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagIndicador" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagProcess" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/ImporteAjust" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
@@ -766,9 +777,6 @@
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/Ledger" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/saldInitial" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">

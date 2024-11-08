@@ -44,9 +44,6 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/Update_mc">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/saldInitial">
-                <Annotation Term="UI.HiddenFilter"/>
-            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AmountInCompanyCodeCurrency">
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
@@ -75,6 +72,15 @@
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AccountingDocument">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagProcess">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagIndicador">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagExecute">
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/createAccountigContab_ac">
@@ -156,11 +162,6 @@
                                     <PropertyValue Property="width" String="12rem"/>
                                 </Record>
                             </Annotation>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="saldInitial"/>
-                            <Annotation Term="UI.Emphasized"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="AmountInCompanyCodeCurrency"/>
