@@ -4,8 +4,10 @@ sap.ui.define([
     "ns/asa/zappreportinflresvf/controller/BaseController",
     "sap/m/VariantItem",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
 ],
-    function (Controller, MessageBox, BaseController, VariantItem, JSONModel) {
+    function (Controller, MessageBox, BaseController, VariantItem, JSONModel,Filter,FilterOperator) {
         "use strict";
 
         return BaseController.extend("ns.asa.zappreportinflresvf.controller.ReportMain", {
@@ -62,6 +64,9 @@ sap.ui.define([
 
                             if (objectModel) {
                                 if (objectModel.FlagExecute == 'X') {
+                                    //Llamar al servicio detallado para actualizar los items a procesar
+                                    const rptaOdataDet = await this._getDataDetallado(objectModel);
+
                                     body.companycode = objectModel.CompanyCode;
                                     body.fiscalyear = objectModel.FiscalYear;
                                     body.fiscalperiod = objectModel.FiscalPeriod;
@@ -89,11 +94,27 @@ sap.ui.define([
                             }
                         }
                         this.hideBusyText();
+                        this.onRefreshSingle();
                         //Mostrar Log
                         oModelData.setProperty("/log", logData);
                         this.showLog();
-
                     }
+                }
+            },
+            _getDataDetallado: function(object){
+                 const odataModel = this.getView().getModel("modelOdataDet");
+                 const path = '/ZreportInfAccDet';
+                 let parameters = { filters : [] };
+
+                 parameters.filters.push(new Filter("CompanyCode", "EQ", object.CompanyCode));
+                 parameters.filters.push(new Filter("FiscalYear", "EQ", object.FiscalYear));
+                 parameters.filters.push(new Filter("FiscalPeriod", "EQ", object.FiscalPeriod));
+                 parameters.filters.push(new Filter("GLAccount", "EQ", object.GLAccount));
+
+                try {
+                    return this.readEntity(odataModel,path,parameters);
+                } catch (error) {
+                    console.error("Error en la función _getDataDetallado" , error);
                 }
             },
             _set_LogItems: function (datos, logData, status) {
@@ -136,6 +157,16 @@ sap.ui.define([
                     }
                 });
 
+            },
+            readEntity: function(odataModel,path,parameters){
+                return new Promise(async (resolve,reject) => {
+                    odataModel.read(path,{
+                        filters: parameters.filters,
+                        urlParameters: parameters.urlParameters,
+                        success: resolve,
+                        error: reject
+                    });
+                });
             },
             confirmPopup: async function (title, msg) {
                 let t = this;

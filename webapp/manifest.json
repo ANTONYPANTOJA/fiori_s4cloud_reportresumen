@@ -33,6 +33,10 @@
         "settings": {
           "localUri": "localService/ZUI_RAP_REPORT_INFLACCORES_VAN.xml"
         }
+      },
+      "ServiceDetalladoAf":{
+        "uri": "/sap/opu/odata/sap/ZUI_RAP_REPORT_INFLACCODET/",
+        "type": "OData"
       }
     },
     "crossNavigation": {
@@ -90,6 +94,11 @@
       },
       "": {
         "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      },
+      "modelOdataDet":{
+        "dataSource": "ServiceDetalladoAf",
         "preload": true,
         "settings": {}
       }
