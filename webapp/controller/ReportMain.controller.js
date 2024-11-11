@@ -220,8 +220,10 @@ sap.ui.define([
                 }else{
                     return "None";
                 }
+            },
+            handleClose: function(){
+                this.onRefresh();
             }
-            
-
+        
         });
     });
