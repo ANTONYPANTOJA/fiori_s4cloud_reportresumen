@@ -7,7 +7,7 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
 ],
-    function (Controller, MessageBox, BaseController, VariantItem, JSONModel,Filter,FilterOperator) {
+    function (Controller, MessageBox, BaseController, VariantItem, JSONModel, Filter, FilterOperator) {
         "use strict";
 
         return BaseController.extend("ns.asa.zappreportinflresvf.controller.ReportMain", {
@@ -31,6 +31,7 @@ sap.ui.define([
                 this.setModel(model, "model");
             },
             onPostPressed: async function () {
+                let flagProcess = false;
                 let logData = [];
                 let body = {};
 
@@ -63,64 +64,81 @@ sap.ui.define([
                             const objectModel = contextObject.getObject();
 
                             if (objectModel) {
-                                if (objectModel.FlagExecute == 'X') {
-                                    //Llamar al servicio detallado para actualizar los items a procesar
-                                    const rptaOdataDet = await this._getDataDetallado(objectModel);
-
-                                    body.companycode = objectModel.CompanyCode;
-                                    body.fiscalyear = objectModel.FiscalYear;
-                                    body.fiscalperiod = objectModel.FiscalPeriod;
-                                    body.glaccount = objectModel.GLAccount;
-                                    body.AmountInCompanyCodeCurrency = parseFloat(objectModel.AmountInCompanyCodeCurrency).toFixed(2);
-                                    body.ledger = objectModel.Ledger;
-                                    body.CentroCosto = objectModel.CentroCosto;
-                                    body.CompanyCodeCurrency = objectModel.CompanyCodeCurrency;
-                                    body.CtaDebe = objectModel.CtaDebe;
-                                    body.CtaHaber = objectModel.CtaHaber;
-                                    body.FechaAjust = objectModel.FechaAjust;
-                                    //                      body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
-                                    body.ImporteAjust = parseFloat(objectModel.ImporteAjust).toFixed(2);
-                                    try {
-                                        const result = await this.createPostAction(path, body);
-                                        if (result) {
-                                            this._set_LogItems(objectModel, logData, 'S');
-                                        }
-                                    } catch (error) {
-                                        console.error("Error Function postActionPress -" + body.glaccount, error)
-                                    }
+                                //Validar Importe
+                                if (objectModel.AmountInCompanyCodeCurrency == "0.00" || objectModel.AmountInCompanyCodeCurrency == "0"
+                                    || objectModel.AmountInCompanyCodeCurrency == undefined || objectModel.AmountInCompanyCodeCurrency == null
+                                ) {
+                                    this._set_LogItems(objectModel, logData, 'E', true);
                                 } else {
-                                    this._set_LogItems(objectModel, logData, 'E');
+                                    if (objectModel.FlagExecute == 'X') {
+                                        //Llamar al servicio detallado para actualizar los items a procesar
+                                        const rptaOdataDet = await this._getDataDetallado(objectModel);
+
+                                        body.companycode = objectModel.CompanyCode;
+                                        body.fiscalyear = objectModel.FiscalYear;
+                                        body.fiscalperiod = objectModel.FiscalPeriod;
+                                        body.glaccount = objectModel.GLAccount;
+                                        body.AmountInCompanyCodeCurrency = parseFloat(objectModel.AmountInCompanyCodeCurrency).toFixed(2);
+                                        body.ledger = objectModel.Ledger;
+                                        body.CentroCosto = objectModel.CentroCosto;
+                                        body.CompanyCodeCurrency = objectModel.CompanyCodeCurrency;
+                                        body.CtaDebe = objectModel.CtaDebe;
+                                        body.CtaHaber = objectModel.CtaHaber;
+                                        body.FechaAjust = objectModel.FechaAjust;
+                                        //                      body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
+                                        body.ImporteAjust = parseFloat(objectModel.ImporteAjust).toFixed(2);
+                                        try {
+                                            const result = await this.createPostAction(path, body);
+                                            if (result) {
+                                                this._set_LogItems(objectModel, logData, 'S');
+                                                flagProcess = true;
+                                            }
+                                        } catch (error) {
+                                            console.error("Error Function postActionPress -" + body.glaccount, error)
+                                        }
+                                    } else {
+                                        this._set_LogItems(objectModel, logData, 'E');
+                                    }
                                 }
                             }
                         }
                         this.hideBusyText();
-                        this.onRefreshSingle();
+                        if (flagProcess) {
+                            this.onRefreshSingle();
+                        }
+                        
                         //Mostrar Log
                         oModelData.setProperty("/log", logData);
                         this.showLog();
                     }
                 }
             },
-            _getDataDetallado: function(object){
-                 const odataModel = this.getView().getModel("modelOdataDet");
-                 const path = '/ZreportInfAccDet';
-                 let parameters = { filters : [] };
+            _getDataDetallado: function (object) {
+                const odataModel = this.getView().getModel("modelOdataDet");
+                const path = '/ZreportInfAccDet';
+                let parameters = { filters: [] };
 
-                 parameters.filters.push(new Filter("CompanyCode", "EQ", object.CompanyCode));
-                 parameters.filters.push(new Filter("FiscalYear", "EQ", object.FiscalYear));
-                 parameters.filters.push(new Filter("FiscalPeriod", "EQ", object.FiscalPeriod));
-                 parameters.filters.push(new Filter("GLAccount", "EQ", object.GLAccount));
+                parameters.filters.push(new Filter("CompanyCode", "EQ", object.CompanyCode));
+                parameters.filters.push(new Filter("FiscalYear", "EQ", object.FiscalYear));
+                parameters.filters.push(new Filter("FiscalPeriod", "EQ", object.FiscalPeriod));
+                parameters.filters.push(new Filter("GLAccount", "EQ", object.GLAccount));
 
                 try {
-                    return this.readEntity(odataModel,path,parameters);
+                    return this.readEntity(odataModel, path, parameters);
                 } catch (error) {
-                    console.error("Error en la función _getDataDetallado" , error);
+                    console.error("Error en la función _getDataDetallado", error);
                 }
             },
-            _set_LogItems: function (datos, logData, status) {
+            _set_LogItems: function (datos, logData, status, montoCero) {
                 let mensaje = "";
                 //FlagExecute,FlagIndicador,FlagProcess
                 if (status == 'E') {
+
+                    if (montoCero) {
+                        mensaje = this.getResourceBundle().getText("errorCero");
+                        logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
+                        return
+                    }
                     if (datos.FlagIndicador == '' || datos.FlagIndicador == undefined) {
                         mensaje = this.getResourceBundle().getText("errorIndic");
                         logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
@@ -130,7 +148,7 @@ sap.ui.define([
                             logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
                         }
                     }
-                } else if (status == 'S' ){
+                } else if (status == 'S') {
                     mensaje = this.getResourceBundle().getText("okEnvio");
                     logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'S', messageLog: mensaje });
                 }
@@ -158,9 +176,9 @@ sap.ui.define([
                 });
 
             },
-            readEntity: function(odataModel,path,parameters){
-                return new Promise(async (resolve,reject) => {
-                    odataModel.read(path,{
+            readEntity: function (odataModel, path, parameters) {
+                return new Promise(async (resolve, reject) => {
+                    odataModel.read(path, {
                         filters: parameters.filters,
                         urlParameters: parameters.urlParameters,
                         success: resolve,
@@ -203,27 +221,27 @@ sap.ui.define([
                     }
                 }
             },
-            formatAvailableToIcon: function(status){
-                if(status == 'E'){
-                    return  "sap-icon://status-error";
-                }else if (status == 'S'){
+            formatAvailableToIcon: function (status) {
+                if (status == 'E') {
+                    return "sap-icon://status-error";
+                } else if (status == 'S') {
                     return "sap-icon://message-success";
-                }else{
+                } else {
                     return "";
                 }
             },
-            formatAvailableToObjectState: function(status){
-                if(status == 'E'){
-                    return  "Error";
-                }else if (status == 'S'){
+            formatAvailableToObjectState: function (status) {
+                if (status == 'E') {
+                    return "Error";
+                } else if (status == 'S') {
                     return "Success";
-                }else{
+                } else {
                     return "None";
                 }
             },
-            handleClose: function(){
+            handleClose: function () {
                 this.onRefresh();
             }
-        
+
         });
     });

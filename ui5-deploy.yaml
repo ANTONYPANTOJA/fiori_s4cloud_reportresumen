@@ -20,6 +20,6 @@ builder:
           name: ZBSP_RPRESVF
           description: Reporte Resumido Inflación para cuentas de mayor
           package: ZFI_ACTIVOS
-          transport: JBRK900288
+          transport: JBRK900542
         exclude:
           - /test/
