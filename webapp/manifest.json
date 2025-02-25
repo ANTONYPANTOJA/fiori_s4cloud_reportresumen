@@ -23,7 +23,7 @@
           "annotations": [
             "ZUI_RAP_REPORT_INFLACCORES_VAN"
           ],
-          "localUri": "localService/metadata.xml",
+          "localUri": "localService/mainService/metadata.xml",
           "odataVersion": "2.0"
         }
       },
@@ -31,12 +31,26 @@
         "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZUI_RAP_REPORT_INFLACCORES_VAN',Version='0001')/$value/",
         "type": "ODataAnnotation",
         "settings": {
-          "localUri": "localService/ZUI_RAP_REPORT_INFLACCORES_VAN.xml"
+          "localUri": "localService/mainService/ZUI_RAP_REPORT_INFLACCORES_VAN.xml"
         }
       },
-      "ServiceDetalladoAf":{
+      "ServiceDetalladoAf": {
         "uri": "/sap/opu/odata/sap/ZUI_RAP_REPORT_INFLACCODET/",
-        "type": "OData"
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "ZUI_RAP_REPORT_INFLACCODET_VAN"
+          ],
+          "localUri": "localService/ServiceDetalladoAf/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "ZUI_RAP_REPORT_INFLACCODET_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZUI_RAP_REPORT_INFLACCODET_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/ServiceDetalladoAf/ZUI_RAP_REPORT_INFLACCODET_VAN.xml"
+        }
       }
     },
     "crossNavigation": {
@@ -97,7 +111,12 @@
         "preload": true,
         "settings": {}
       },
-      "modelOdataDet":{
+      "modelOdataDet": {
+        "dataSource": "ServiceDetalladoAf",
+        "preload": true,
+        "settings": {}
+      },
+      "ServiceDetalladoAf": {
         "dataSource": "ServiceDetalladoAf",
         "preload": true,
         "settings": {}

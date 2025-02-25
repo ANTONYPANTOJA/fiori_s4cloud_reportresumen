@@ -122,6 +122,7 @@ sap.ui.define([
                 parameters.filters.push(new Filter("FiscalYear", "EQ", object.FiscalYear));
                 parameters.filters.push(new Filter("FiscalPeriod", "EQ", object.FiscalPeriod));
                 parameters.filters.push(new Filter("GLAccount", "EQ", object.GLAccount));
+                parameters.filters.push(new Filter("FlgFilter", "EQ", "X")); //+
 
                 try {
                     return this.readEntity(odataModel, path, parameters);

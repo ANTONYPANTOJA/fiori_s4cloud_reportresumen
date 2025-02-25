@@ -35,10 +35,18 @@ server:
         mountPath: /
         services:
           - urlPath: /sap/opu/odata/sap/ZUI_RAP_REPORT_INFLACCORES
-            metadataPath: ./webapp/localService/metadata.xml
-            mockdataPath: ./webapp/localService/data
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
             generateMockData: true
-        annotations: []
+          - urlPath: /sap/opu/odata/sap/ZUI_RAP_REPORT_INFLACCODET
+            metadataPath: ./webapp/localService/ServiceDetalladoAf/metadata.xml
+            mockdataPath: ./webapp/localService/ServiceDetalladoAf/data
+            generateMockData: true
+        annotations:
+          - localPath: ./webapp/localService/mainService/ZUI_RAP_REPORT_INFLACCORES_VAN.xml
+            urlPath: /sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZUI_RAP_REPORT_INFLACCORES_VAN',Version='0001')/$value/
+          - localPath: ./webapp/localService/ServiceDetalladoAf/ZUI_RAP_REPORT_INFLACCODET_VAN.xml
+            urlPath: /sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZUI_RAP_REPORT_INFLACCODET_VAN',Version='0001')/$value/
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
