@@ -69,6 +69,25 @@
                 <Property Name="FiscalYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="NonNegative" sap:label="Fiscal Year"/>
                 <Property Name="AccountingDocument" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Journal Entry"/>
             </EntityType>
+            <EntityType Name="LogAsyncJeType" sap:label="Consump. para el Log de Respuestas ASYNC" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IdReference"/>
+                </Key>
+                <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdReference" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CreationDatetime" Type="Edm.String" MaxLength="100"/>
+                <Property Name="ConfirmInterfaceOrignname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="SenderBusinessSystemId" Type="Edm.String" MaxLength="100"/>
+                <Property Name="RecipientBusinessSystemId" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Accountingdocument" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Document Number" sap:quickinfo="Document Number of an Accounting Document"/>
+                <Property Name="Companycode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Company Code"/>
+                <Property Name="Fiscalyear" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative" sap:label="Fiscal Year"/>
+                <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Local Instance Last Changed By User" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time" sap:creatable="false" sap:updatable="false"/>
+            </EntityType>
             <EntityType Name="ZI_PERIODOType" sap:label="Periodos del año" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="DomainName"/>
@@ -396,6 +415,7 @@
                 <EntitySet Name="I_CompanyCodeStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_CompanyCodeStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_GLAcctInChtOfAcctsStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_GLAcctInChtOfAcctsStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_JournalEntryStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_JournalEntryStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="LogAsyncJe" EntityType="cds_zui_rap_report_inflaccount_res.LogAsyncJeType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
                 <EntitySet Name="ZI_PERIODO" EntityType="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="ActionLedger" EntityType="cds_zui_rap_report_inflaccount_res.ActionLedgerType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
                 <EntitySet Name="ZreportInfAccRes" EntityType="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType" sap:creatable="false" sap:deletable="false" sap:requires-filter="true" sap:content-version="1" sap:updatable-path="Update_mc"/>
@@ -649,6 +669,48 @@
                     </Record>
                 </Annotation>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities/LogAsyncJe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Path="Delete_mc"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="true"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection>
+                        <PropertyPath>LastChangedAt</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities/ZI_PERIODO" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
@@ -761,6 +823,33 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/saldInitial" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Accountingdocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Companycode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/ConfirmInterfaceOrignname" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/CreationDatetime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Fiscalyear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/IdReference" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/RecipientBusinessSystemId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/SenderBusinessSystemId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AmountInCompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
@@ -856,6 +945,9 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/GLAccount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/CreatedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ABP_CREATION_USER&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/CompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERS&amp;origin=JBR_080"/>
             </Annotations>
@@ -877,11 +969,17 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_GLAcctInChtOfAcctsStdVHType/GLAccount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Companycode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BUKRS&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/ValueLow" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=DOMVALUE_L&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/Language" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=DDLANGUAGE&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Accountingdocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BELNR_D&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AmountInCompanyCodeCurrency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WRBTR&amp;origin=JBR_080"/>
@@ -895,6 +993,9 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/glaccount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Fiscalyear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_CompanyCodeStdVHType/CompanyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BUKRS&amp;origin=JBR_080"/>
             </Annotations>
@@ -903,6 +1004,9 @@
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/CompanyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BUKRS&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/CreatedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ABP_CREATION_TSTMPL&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_JournalEntryStdVHType/AccountingDocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D&amp;origin=JBR_080"/>
@@ -927,6 +1031,12 @@
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/CentroCosto" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=KOSTL&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/LastChangedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ABP_LOCINST_LASTCHANGE_USER&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/LastChangedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ABP_LOCINST_LASTCHANGE_TSTMPL&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_GLAcctInChtOfAcctsStdVHType/ChartOfAccounts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=KTOPL&amp;origin=JBR_080"/>

@@ -29,6 +29,12 @@
     </edmx:Reference>
     <edmx:DataServices>
         <Schema Namespace="zui_rap_report_inflaccores_van.v1" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/DomainName">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

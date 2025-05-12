@@ -92,6 +92,19 @@ sap.ui.define([
                                             if (result) {
                                                 this._set_LogItems(objectModel, logData, 'S');
                                                 flagProcess = true;
+//verificar Respuesta del Message ASYNC - INSERT 12.05.2025 {
+                                             let idreference = "MSG_" + body.companycode + body.fiscalyear + body.fiscalperiod + body.glaccount;   
+                                             let rptaAsync = false;   
+                                             while (rptaAsync === false) {
+                                                const resultRptaAsync = await this._getLogRptaAsync(idreference);
+                                                if (resultRptaAsync) {
+                                                    console.log(resultRptaAsync);
+                                                    rptaAsync = true;
+                                                }else{
+                                                    rptaAsync = false;
+                                                }
+                                             }
+// INSERT 12.05.2025 }                                                                                                    
                                             }
                                         } catch (error) {
                                             console.error("Error Function postActionPress -" + body.glaccount, error)
@@ -128,6 +141,19 @@ sap.ui.define([
                     return this.readEntity(odataModel, path, parameters);
                 } catch (error) {
                     console.error("Error en la función _getDataDetallado", error);
+                }
+            },
+            _getLogRptaAsync: function(idreference){
+                const odataModel = this.getView().getModel();
+                const path = '/LogAsyncJe';
+                let parameters = { filters: [] , urlParameters: {  "$expand": "to_LogItemsJe"} };
+
+                parameters.filters.push(new Filter("IdReference", "EQ",idreference));
+
+                try {
+                    return this.readEntity(odataModel, path, parameters);
+                } catch (error) {
+                    console.error("Error en la función _getLogRptaAsync", error);
                 }
             },
             _set_LogItems: function (datos, logData, status, montoCero) {
