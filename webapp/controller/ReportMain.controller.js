@@ -90,21 +90,37 @@ sap.ui.define([
                                         try {
                                             const result = await this.createPostAction(path, body);
                                             if (result) {
-                                                this._set_LogItems(objectModel, logData, 'S');
+                                                //this._set_LogItems(objectModel, logData, 'S');
                                                 flagProcess = true;
-//verificar Respuesta del Message ASYNC - INSERT 12.05.2025 {
-                                             let idreference = "MSG_" + body.companycode + body.fiscalyear + body.fiscalperiod + body.glaccount;   
-                                             let rptaAsync = false;   
-                                             while (rptaAsync === false) {
-                                                const resultRptaAsync = await this._getLogRptaAsync(idreference);
-                                                if (resultRptaAsync) {
-                                                    console.log(resultRptaAsync);
-                                                    rptaAsync = true;
-                                                }else{
-                                                    rptaAsync = false;
+
+                                                //verificar Respuesta del Message ASYNC - INSERT 12.05.2025 {
+                                                let idreference = "MSG_" + body.companycode + body.fiscalyear + "0" + body.fiscalperiod + "-" + body.glaccount;
+                                                let rptaAsync = false;
+                                                while (rptaAsync === false) {
+                                                    const resultRptaAsync = await this._getLogRptaAsync(idreference);
+                                                    if (resultRptaAsync.length > 0) {
+                                                        const rptaLog = resultRptaAsync[0];
+                                                        if (rptaLog.Accountingdocument != "" && rptaLog.Accountingdocument != null && rptaLog.Accountingdocument != undefined) {
+                                                            for (let index = 0; index < rptaLog.to_LogItemsJe.results.length; index++) {
+                                                                const element = rptaLog.to_LogItemsJe.results[index];
+                                                                if (element.Severitycode == "1") {
+                                                                    logData.push({ GLAccount: objectModel.GLAccount, InflorigText: objectModel.InflorigText, Status: 'S', messageLog: element.Note });
+                                                                }
+                                                            }
+                                                        } else {
+                                                            for (let index = 0; index < rptaLog.to_LogItemsJe.results.length; index++) {
+                                                                const element = rptaLog.to_LogItemsJe.results[index];
+                                                                if (element.Severitycode == "3") {
+                                                                    logData.push({ GLAccount: objectModel.GLAccount, InflorigText: objectModel.InflorigText, Status: 'E', messageLog: element.Note });
+                                                                }
+                                                            }
+                                                        }
+                                                        rptaAsync = true;
+                                                    } else {
+                                                        rptaAsync = false;
+                                                    }
                                                 }
-                                             }
-// INSERT 12.05.2025 }                                                                                                    
+                                                // INSERT 12.05.2025 }                                                                                                    
                                             }
                                         } catch (error) {
                                             console.error("Error Function postActionPress -" + body.glaccount, error)
@@ -119,7 +135,7 @@ sap.ui.define([
                         if (flagProcess) {
                             this.onRefreshSingle();
                         }
-                        
+
                         //Mostrar Log
                         oModelData.setProperty("/log", logData);
                         this.showLog();
@@ -143,15 +159,18 @@ sap.ui.define([
                     console.error("Error en la función _getDataDetallado", error);
                 }
             },
-            _getLogRptaAsync: function(idreference){
+            _getLogRptaAsync: async function (idreference) {
                 const odataModel = this.getView().getModel();
                 const path = '/LogAsyncJe';
-                let parameters = { filters: [] , urlParameters: {  "$expand": "to_LogItemsJe"} };
+                let parameters = { filters: [], urlParameters: { "$expand": "to_LogItemsJe" } };
 
-                parameters.filters.push(new Filter("IdReference", "EQ",idreference));
+                parameters.filters.push(new Filter("IdReference", "EQ", idreference));
 
                 try {
-                    return this.readEntity(odataModel, path, parameters);
+                    const rptaDetail = await this.readEntity(odataModel, path, parameters);
+                    if (rptaDetail) {
+                        return rptaDetail.results;
+                    }
                 } catch (error) {
                     console.error("Error en la función _getLogRptaAsync", error);
                 }
