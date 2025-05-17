@@ -100,7 +100,8 @@ sap.ui.define([
                                                     const resultRptaAsync = await this._getLogRptaAsync(idreference);
                                                     if (resultRptaAsync.length > 0) {
                                                         const rptaLog = resultRptaAsync[0];
-                                                        if (rptaLog.Accountingdocument != "" && rptaLog.Accountingdocument != null && rptaLog.Accountingdocument != undefined) {
+                                                        if (rptaLog.Accountingdocument != "" && rptaLog.Accountingdocument != null && rptaLog.Accountingdocument != undefined
+                                                            && rptaLog.Accountingdocument != "0" != rptaLog.Accountingdocument != "0000000000" ) {
                                                             for (let index = 0; index < rptaLog.to_LogItemsJe.results.length; index++) {
                                                                 const element = rptaLog.to_LogItemsJe.results[index];
                                                                 if (element.Severitycode == "1") {
