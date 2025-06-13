@@ -190,7 +190,7 @@ sap.ui.define([
                         mensaje = this.getResourceBundle().getText("errorIndic");
                         logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
                     } else {
-                        if (datos.FlagProcess == 'X') {
+                        if (datos.FlagProcess == 'X' || datos.AccountingDocument !== "" || datos.AccountingDocument !== undefined) { //+@MODIFY 12.06.2025
                             mensaje = this.getResourceBundle().getText("errorProcess");
                             logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
                         }

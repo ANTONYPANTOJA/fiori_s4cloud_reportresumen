@@ -17,7 +17,7 @@ server:
           - authenticationType: SAMLAssertion
             path: /sap
             url: https://my412302-api.s4hana.cloud.sap
-            destination: DATEC_S4_CLOUD_DEV
+            destination: DATEC_S4_PUBLIC_CLOUD_DEVELOPMENT
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
