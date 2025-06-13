@@ -92,7 +92,7 @@ sap.ui.define([
                                             if (result) {
                                                 //this._set_LogItems(objectModel, logData, 'S');
                                                 flagProcess = true;
-
+                                                /*
                                                 //verificar Respuesta del Message ASYNC - INSERT 12.05.2025 {
                                                 let idreference = "MSG_" + body.companycode + body.fiscalyear + "0" + body.fiscalperiod + "-" + body.glaccount;
                                                 let rptaAsync = false;
@@ -121,7 +121,34 @@ sap.ui.define([
                                                         rptaAsync = false;
                                                     }
                                                 }
-                                                // INSERT 12.05.2025 }                                                                                                    
+                                                // INSERT 12.05.2025 } 
+                                                */
+                                                //Nueva lógica para obtener el último log actualizado
+                                                //INSERT 13.06.2025 {
+
+                                                let rptaAsync = false;
+                                                while (rptaAsync === false) {
+                                                    try {
+                                                        const resultOdata = await this._getDataPeriodoExec(objectModel);
+                                                        if (resultOdata.results) {
+                                                            if (resultOdata.results.length > 0) {
+                                                                const results = resultOdata.results[0];
+                                                                if (results.Code != '' && results.Code != undefined) {
+                                                                    if (results.Code == 'S') {
+                                                                        rptaAsync = true;
+                                                                        logData.push({ GLAccount: objectModel.GLAccount, InflorigText: objectModel.InflorigText, Status: 'S', messageLog: results.Message });
+                                                                    } else if (results.Code == 'E') {
+                                                                        rptaAsync = true;
+                                                                        logData.push({ GLAccount: objectModel.GLAccount, InflorigText: objectModel.InflorigText, Status: 'E', messageLog: results.Message });
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    } catch (error) {
+                                                        console.error("Error en la lectura de la respuesta ASYNC", error);
+                                                    }
+                                                }
+                                                //INSERT 13.06.2025 }
                                             }
                                         } catch (error) {
                                             console.error("Error Function postActionPress -" + body.glaccount, error)
@@ -160,6 +187,22 @@ sap.ui.define([
                     console.error("Error en la función _getDataDetallado", error);
                 }
             },
+            _getDataPeriodoExec: function (object) {
+                const odataModel = this.getView().getModel();
+                const path = '/Perinflexec';
+                let parameters = { filters: [] };
+
+                parameters.filters.push(new Filter("Companycode", "EQ", object.CompanyCode));
+                parameters.filters.push(new Filter("Fiscalyear", "EQ", object.FiscalYear));
+                parameters.filters.push(new Filter("Fiscalperiod", "EQ", object.FiscalPeriod));
+                parameters.filters.push(new Filter("Glaccount", "EQ", object.GLAccount));
+                try {
+                    return this.readEntity(odataModel, path, parameters);
+                } catch (error) {
+                    console.error("Error en la función _getDataPeriodoExec", error);
+                }
+            },
+
             _getLogRptaAsync: async function (idreference) {
                 const odataModel = this.getView().getModel();
                 const path = '/LogAsyncJe';
@@ -181,6 +224,12 @@ sap.ui.define([
                 //FlagExecute,FlagIndicador,FlagProcess
                 if (status == 'E') {
 
+                    if (datos.FlagProcess == 'X' || datos.AccountingDocument !== "" || datos.AccountingDocument !== undefined) { //+@MODIFY 12.06.2025
+                        mensaje = this.getResourceBundle().getText("errorProcess");
+                        logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
+                        return
+                    }
+
                     if (montoCero) {
                         mensaje = this.getResourceBundle().getText("errorCero");
                         logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
@@ -189,12 +238,9 @@ sap.ui.define([
                     if (datos.FlagIndicador == '' || datos.FlagIndicador == undefined) {
                         mensaje = this.getResourceBundle().getText("errorIndic");
                         logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
-                    } else {
-                        if (datos.FlagProcess == 'X' || datos.AccountingDocument !== "" || datos.AccountingDocument !== undefined) { //+@MODIFY 12.06.2025
-                            mensaje = this.getResourceBundle().getText("errorProcess");
-                            logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'E', messageLog: mensaje });
-                        }
+                        return
                     }
+                    
                 } else if (status == 'S') {
                     mensaje = this.getResourceBundle().getText("okEnvio");
                     logData.push({ GLAccount: datos.GLAccount, InflorigText: datos.InflorigText, Status: 'S', messageLog: mensaje });
