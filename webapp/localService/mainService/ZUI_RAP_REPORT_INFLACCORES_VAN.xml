@@ -35,6 +35,12 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Update_mc">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/to_LogItemsJe_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/DomainName">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -87,6 +93,9 @@
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagExecute">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/IdUi">
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/createAccountigContab_ac">

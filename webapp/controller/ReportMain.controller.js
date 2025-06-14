@@ -87,6 +87,7 @@ sap.ui.define([
                                         body.FechaAjust = objectModel.FechaAjust;
                                         //                      body.saldInitial = parseFloat(objectModel.saldInitial).toFixed(2);
                                         body.ImporteAjust = parseFloat(objectModel.ImporteAjust).toFixed(2);
+
                                         try {
                                             const result = await this.createPostAction(path, body);
                                             if (result) {
@@ -123,6 +124,8 @@ sap.ui.define([
                                                 }
                                                 // INSERT 12.05.2025 } 
                                                 */
+
+                                                
                                                 //Nueva lógica para obtener el último log actualizado
                                                 //INSERT 13.06.2025 {
 
@@ -132,7 +135,14 @@ sap.ui.define([
                                                         const resultOdata = await this._getDataPeriodoExec(objectModel);
                                                         if (resultOdata.results) {
                                                             if (resultOdata.results.length > 0) {
-                                                                const results = resultOdata.results[0];
+                                                                const results = resultOdata.results[0];   
+
+                                                                //+@INSERT 14.06.2025 {
+                                                                //Validar los UUIDD
+                                                                const idOld = objectModel.IdUi;
+                                                                if (idOld !== results.IdUi && ( results.IdUi !== "")) {
+                                                                //+@INSERT 14.06.2025 }
+
                                                                 if (results.Code != '' && results.Code != undefined) {
                                                                     if (results.Code == 'S') {
                                                                         rptaAsync = true;
@@ -142,13 +152,14 @@ sap.ui.define([
                                                                         logData.push({ GLAccount: objectModel.GLAccount, InflorigText: objectModel.InflorigText, Status: 'E', messageLog: results.Message });
                                                                     }
                                                                 }
+                                                            }//+
                                                             }
                                                         }
                                                     } catch (error) {
                                                         console.error("Error en la lectura de la respuesta ASYNC", error);
                                                     }
                                                 }
-                                                //INSERT 13.06.2025 }
+                                             
                                             }
                                         } catch (error) {
                                             console.error("Error Function postActionPress -" + body.glaccount, error)

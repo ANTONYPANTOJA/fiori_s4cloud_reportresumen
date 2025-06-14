@@ -69,13 +69,38 @@
                 <Property Name="FiscalYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="NonNegative" sap:label="Fiscal Year"/>
                 <Property Name="AccountingDocument" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Journal Entry"/>
             </EntityType>
+            <EntityType Name="PerinflexecType" sap:label="Obtener los valores del per.ejecutados" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Companycode"/>
+                    <PropertyRef Name="Glaccount"/>
+                    <PropertyRef Name="Fiscalyear"/>
+                    <PropertyRef Name="Fiscalperiod"/>
+                    <PropertyRef Name="Ledger"/>
+                </Key>
+                <Property Name="Companycode" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Company Code"/>
+                <Property Name="Glaccount" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account" sap:quickinfo="G/L Account Number"/>
+                <Property Name="Fiscalyear" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="NonNegative" sap:label="Fiscal Year"/>
+                <Property Name="Fiscalperiod" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="NonNegative"/>
+                <Property Name="Ledger" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:label="Ledger" sap:quickinfo="Ledger in General Ledger Accounting"/>
+                <Property Name="Ejecutado" Type="Edm.Boolean" sap:label="Truth Value" sap:quickinfo="Truth Value: True/False"/>
+                <Property Name="Createdby" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+                <Property Name="Createdat" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp" sap:quickinfo="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+                <Property Name="Lastchangedby" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+                <Property Name="Lastchangedat" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp" sap:quickinfo="UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"/>
+                <Property Name="Code" Type="Edm.String" MaxLength="1"/>
+                <Property Name="Message" Type="Edm.String"/>
+                <Property Name="GjahrGenerado" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative" sap:label="Fiscal Year"/>
+                <Property Name="DocGenerado" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Document Number" sap:quickinfo="Document Number of an Accounting Document"/>
+            </EntityType>
             <EntityType Name="LogAsyncJeType" sap:label="Consump. para el Log de Respuestas ASYNC" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="IdReference"/>
+                    <PropertyRef Name="IdReferenceUuid"/>
                 </Key>
                 <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="IdReference" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="to_LogItemsJe_oc" Type="Edm.Boolean" sap:label="Dynamic CbA-Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdReferenceUuid" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:quickinfo="16 Byte UUID in 16 Bytes (Raw Format)" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IdReference" Type="Edm.String" MaxLength="50"/>
                 <Property Name="CreationDatetime" Type="Edm.String" MaxLength="100"/>
                 <Property Name="ConfirmInterfaceOrignname" Type="Edm.String" MaxLength="100"/>
                 <Property Name="SenderBusinessSystemId" Type="Edm.String" MaxLength="100"/>
@@ -87,6 +112,23 @@
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Local Instance Last Changed By User" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time" sap:creatable="false" sap:updatable="false"/>
+                <NavigationProperty Name="to_LogItemsJe" Relationship="cds_zui_rap_report_inflaccount_res.assoc_82C7BB766739BD9CE12CEB3CE8873005" FromRole="FromRole_assoc_82C7BB766739BD9CE12CEB3CE8873005" ToRole="ToRole_assoc_82C7BB766739BD9CE12CEB3CE8873005"/>
+            </EntityType>
+            <EntityType Name="LogAsyncJeItemsType" sap:label="Consumption Log Journal Entry items" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IdReferenceUuid"/>
+                    <PropertyRef Name="Item"/>
+                </Key>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IdReferenceUuid" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:quickinfo="16 Byte UUID in 16 Bytes (Raw Format)" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Item" Type="Edm.Int32" Nullable="false" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IdReference" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Typeid" Type="Edm.String" MaxLength="25"/>
+                <Property Name="Severitycode" Type="Edm.String" MaxLength="1"/>
+                <Property Name="Note" Type="Edm.String"/>
+                <Property Name="Weburi" Type="Edm.String"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time" sap:creatable="false" sap:updatable="false"/>
+                <NavigationProperty Name="to_LogJeAsync" Relationship="cds_zui_rap_report_inflaccount_res.assoc_82C7BB766739BD9CE12CEB3CE8873005" FromRole="ToRole_assoc_82C7BB766739BD9CE12CEB3CE8873005" ToRole="FromRole_assoc_82C7BB766739BD9CE12CEB3CE8873005"/>
             </EntityType>
             <EntityType Name="ZI_PERIODOType" sap:label="Periodos del año" sap:value-list="true" sap:content-version="1">
                 <Key>
@@ -155,6 +197,7 @@
                 <Property Name="FlagProcess" Type="Edm.String" MaxLength="1"/>
                 <Property Name="FlagIndicador" Type="Edm.String" MaxLength="1"/>
                 <Property Name="FlagExecute" Type="Edm.String" MaxLength="1"/>
+                <Property Name="IdUi" Type="Edm.String" MaxLength="60"/>
             </EntityType>
             <EntityType Name="SAP__Currency" sap:content-version="1">
                 <Key>
@@ -303,6 +346,20 @@
             <ComplexType Name="SAP__HeaderFooterField">
                 <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </ComplexType>
+            <Association Name="assoc_82C7BB766739BD9CE12CEB3CE8873005" sap:content-version="1">
+                <End Type="cds_zui_rap_report_inflaccount_res.LogAsyncJeType" Multiplicity="1" Role="FromRole_assoc_82C7BB766739BD9CE12CEB3CE8873005">
+                    <OnDelete Action="Cascade"/>
+                </End>
+                <End Type="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType" Multiplicity="*" Role="ToRole_assoc_82C7BB766739BD9CE12CEB3CE8873005"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_assoc_82C7BB766739BD9CE12CEB3CE8873005">
+                        <PropertyRef Name="IdReferenceUuid"/>
+                    </Principal>
+                    <Dependent Role="ToRole_assoc_82C7BB766739BD9CE12CEB3CE8873005">
+                        <PropertyRef Name="IdReferenceUuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
             <Association Name="to_format" sap:content-version="1">
                 <End Type="cds_zui_rap_report_inflaccount_res.SAP__DocumentDescription" Multiplicity="1" Role="FromRole_to_format"/>
                 <End Type="cds_zui_rap_report_inflaccount_res.SAP__Format" Multiplicity="1" Role="ToRole_to_format"/>
@@ -415,7 +472,9 @@
                 <EntitySet Name="I_CompanyCodeStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_CompanyCodeStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_GLAcctInChtOfAcctsStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_GLAcctInChtOfAcctsStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_JournalEntryStdVH" EntityType="cds_zui_rap_report_inflaccount_res.I_JournalEntryStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="Perinflexec" EntityType="cds_zui_rap_report_inflaccount_res.PerinflexecType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="LogAsyncJe" EntityType="cds_zui_rap_report_inflaccount_res.LogAsyncJeType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
+                <EntitySet Name="LogAsyncJeItems" EntityType="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType" sap:deletable="false" sap:content-version="1" sap:updatable-path="Update_mc"/>
                 <EntitySet Name="ZI_PERIODO" EntityType="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="ActionLedger" EntityType="cds_zui_rap_report_inflaccount_res.ActionLedgerType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
                 <EntitySet Name="ZreportInfAccRes" EntityType="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType" sap:creatable="false" sap:deletable="false" sap:requires-filter="true" sap:content-version="1" sap:updatable-path="Update_mc"/>
@@ -432,6 +491,10 @@
                 <EntitySet Name="SAP__UnitsOfMeasure" EntityType="cds_zui_rap_report_inflaccount_res.SAP__UnitOfMeasure" sap:content-version="1"/>
                 <EntitySet Name="SAP__MyDocumentDescriptions" EntityType="cds_zui_rap_report_inflaccount_res.SAP__DocumentDescription" sap:content-version="1"/>
                 <EntitySet Name="SAP__FileShareSet" EntityType="cds_zui_rap_report_inflaccount_res.SAP__FileShare" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="assoc_82C7BB766739BD9CE12CEB3CE8873005" Association="cds_zui_rap_report_inflaccount_res.assoc_82C7BB766739BD9CE12CEB3CE8873005" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="LogAsyncJe" Role="FromRole_assoc_82C7BB766739BD9CE12CEB3CE8873005"/>
+                    <End EntitySet="LogAsyncJeItems" Role="ToRole_assoc_82C7BB766739BD9CE12CEB3CE8873005"/>
+                </AssociationSet>
                 <AssociationSet Name="to_HierarchySet" Association="cds_zui_rap_report_inflaccount_res.to_Hierarchy" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_Hierarchy"/>
                     <End EntitySet="SAP__HierarchySet" Role="ToRole_to_Hierarchy"/>
@@ -578,6 +641,9 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/to_LogItemsJe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities/ActionLedger" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
@@ -681,6 +747,7 @@
                             <Collection>
                                 <PropertyPath>Delete_mc</PropertyPath>
                                 <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_LogItemsJe_oc</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -688,6 +755,22 @@
                 <Annotation Term="Capabilities.InsertRestrictions">
                     <Record>
                         <PropertyValue Property="Insertable" Bool="true"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_LogItemsJe"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="to_LogItemsJe_oc"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
                     </Record>
                 </Annotation>
                 <Annotation Term="SAP__core.OptimisticConcurrency">
@@ -701,13 +784,127 @@
                             <Collection>
                                 <PropertyPath>Delete_mc</PropertyPath>
                                 <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_LogItemsJe_oc</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
                 </Annotation>
                 <Annotation Term="Capabilities.UpdateRestrictions">
                     <Record>
+                        <PropertyValue Property="NonUpdatableNavigationProperties">
+                            <Collection>
+                                <PropertyPath>to_LogItemsJe</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
                         <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities/LogAsyncJeItems" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Note"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Weburi"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_LogJeAsync"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection>
+                        <PropertyPath>LastChangedAt</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>Note</PropertyPath>
+                                <PropertyPath>Weburi</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonUpdatableNavigationProperties">
+                            <Collection>
+                                <PropertyPath>to_LogJeAsync</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.cds_zui_rap_report_inflaccount_res_Entities/Perinflexec" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Message"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SearchExpression"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Message</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
                     </Record>
                 </Annotation>
             </Annotations>
@@ -823,6 +1020,24 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/saldInitial" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/IdReference" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/Note" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/Severitycode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/Typeid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/Weburi" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
@@ -886,6 +1101,9 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/FlagProcess" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/IdUi" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/ImporteAjust" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
@@ -942,6 +1160,9 @@
                     </Record>
                 </Annotation>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Ledger" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FINS_LEDGER&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/GLAccount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
             </Annotations>
@@ -975,8 +1196,17 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/ValueLow" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=DOMVALUE_L&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Fiscalyear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Createdat" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=TIMESTAMPL&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZI_PERIODOType/Language" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=DDLANGUAGE&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Companycode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BUKRS&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Accountingdocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BELNR_D&amp;origin=JBR_080"/>
@@ -996,6 +1226,12 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeType/Fiscalyear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.LogAsyncJeItemsType/LastChangedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ABP_LOCINST_LASTCHANGE_TSTMPL&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Createdby" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SYUNAME&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_CompanyCodeStdVHType/CompanyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BUKRS&amp;origin=JBR_080"/>
             </Annotations>
@@ -1011,11 +1247,26 @@
             <Annotations Target="cds_zui_rap_report_inflaccount_res.I_JournalEntryStdVHType/AccountingDocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D&amp;origin=JBR_080"/>
             </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/GjahrGenerado" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Lastchangedat" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=TIMESTAMPL&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/DocGenerado" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BELNR_D&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Glaccount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
+            </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ActionLedgerType/fiscalyear" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/AccountingDocument" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BELNR_D&amp;origin=JBR_080"/>
+            </Annotations>
+            <Annotations Target="cds_zui_rap_report_inflaccount_res.PerinflexecType/Lastchangedby" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SYUNAME&amp;origin=JBR_080"/>
             </Annotations>
             <Annotations Target="cds_zui_rap_report_inflaccount_res.ZreportInfAccResType/CtaHaber" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=SAKNR&amp;origin=JBR_080"/>
